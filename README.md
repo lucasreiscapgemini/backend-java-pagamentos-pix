@@ -34,7 +34,7 @@ O cliente terá que devolver uma lista de dados pagamento PIX contendo alguns at
 
 ## Alguns pontos que serão bonús:
 
-* Utilizar o frameowork Jarx-rs
+* Utilizar o frameowork Jarx-rs, spring boot ou struts
 * Organização do código 
 * Organização do repositorio remoto
 * Fork e Pull request
