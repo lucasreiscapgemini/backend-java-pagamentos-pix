@@ -33,5 +33,9 @@ O cliente terá que devolver uma lista de dados pagamento PIX contendo alguns at
 	Facilidade ao rodar o projeto
 	Utilização de padrões de projeto
 	Utilização de DDD
-	
+
+## Dúvidas do processo ou enviar zip do projeto
+
+Enviar e-mail para  lucas.reis@capgemini.com , kamila.castelano@capgemini.com , vinicius.pascucci@capgemini.com ou  levi.ferreira@capgemini.com.
+
 **Happy coding! :-)**
