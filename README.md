@@ -1,6 +1,6 @@
 # Capgemini - Desafio Backend | Java
 
-Olá! Esse desafio técnico tem como propósito medir suas habilidades, ver como estuda, pensa e se organiza na prática. O framework utilizado é o JAX-RS ( Especificação Jersey ) utilizando java 8
+Olá! Esse desafio técnico tem como propósito medir suas habilidades, ver como estuda, pensa e se organiza na prática, o  framework é de sua escolha mas a linguagem é java
 
 Após finalizar o desafio, de preferencia faça um fork do projeto depois pull request, nos envie um link para repositório do projeto ou um zip com o código o que se sentir mais confortavel.
 
