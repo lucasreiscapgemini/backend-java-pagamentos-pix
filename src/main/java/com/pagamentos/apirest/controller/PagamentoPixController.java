@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pagamentos.apirest.model.PagamentoPix;
+import com.pagamentos.apirest.models.PagamentoPix;
 import com.pagamentos.apirest.service.PagamentoPixService;
 
 @RestController
