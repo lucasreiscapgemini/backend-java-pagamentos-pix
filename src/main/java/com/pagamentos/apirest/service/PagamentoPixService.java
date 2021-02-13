@@ -2,6 +2,8 @@ package com.pagamentos.apirest.service;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pagamentos.apirest.models.PagamentoPix;
+import com.pagamentos.apirest.models.dto.PagamentoPixDTO;
 import com.pagamentos.apirest.repository.PagamentoPixRepository;
+import com.pagamentos.apirest.util.FormatacaoUtil;
 
 @Service
 public class PagamentoPixService {
@@ -24,21 +28,14 @@ public class PagamentoPixService {
 		return pagamentoPixRepository.findAll();
 	}
 	
-	public PagamentoPix listaPagamento(long id) {
-		if(Objects.isNull(id)){
-			throw new PagamentoPixException("Pagamento Pix não é válido");
+	public PagamentoPixDTO exibePagamento(long id) {
+		if(Objects.isNull(id) || !this.pagamentoPixRepository.existsById(id)){
+			throw new PagamentoPixException("Pagamento Pix não é válido ou não existe");
 		}
-		return pagamentoPixRepository.findById(id).get();
+		return entityToDto(pagamentoPixRepository.findById(id).get());
 	}
 	
-	public void deletaPagamento(PagamentoPix pagamento) {
-		if(Objects.isNull(pagamento.getId())){
-			throw new PagamentoPixException("Pagamento Pix não é válido");
-		}
-		pagamentoPixRepository.delete(pagamento);
-	}
-	
-	public PagamentoPix salvaPagamento(PagamentoPix pagamento) {
+	public PagamentoPixDTO salvaPagamento(PagamentoPix pagamento) {
 		if(Objects.isNull(pagamento.getId())){
 			throw new PagamentoPixException("Pagamento Pix não pode ser salvo");
 		}
@@ -46,18 +43,25 @@ public class PagamentoPixService {
 		return this.atualizaPercentualPagamentoMesAtual(pagamentoPixRepository.save(pagamento));
 	}
 	
-	public PagamentoPix atualizaPagamento(PagamentoPix pagamento) {
-		if(Objects.isNull(pagamento.getId())){
+	public PagamentoPixDTO atualizaPagamento(PagamentoPix pagamento) {
+		if(Objects.isNull(pagamento.getId()) || !this.pagamentoPixRepository.existsById(pagamento.getId())){
 			throw new PagamentoPixException("Pagamento Pix não pode ser atualizado");
 		}
 		return this.atualizaPercentualPagamentoMesAtual(pagamentoPixRepository.save(pagamento));
 	}
 	
 	public void deletaPagamento(Long id) {
-		if(Objects.isNull(id)){
+		if(Objects.isNull(id) || !this.pagamentoPixRepository.existsById(id)) {
+			this.pagamentoPixRepository.deleteById(id);
+		}
+		throw new PagamentoPixException("Pagamento Pix não é válido");
+	}
+	
+	public void deletaPagamento(PagamentoPix pagamento) {
+		if(Objects.isNull(pagamento.getId()) || !this.pagamentoPixRepository.existsById(pagamento.getId())){
 			throw new PagamentoPixException("Pagamento Pix não é válido");
 		}
-		this.pagamentoPixRepository.deleteById(id);
+		this.deletaPagamento(pagamento.getId());
 	}
 	
 	public double calculaPorcentagem(BigDecimal valor) {
@@ -86,7 +90,7 @@ public class PagamentoPixService {
 		return retorno;
 	}
 
-	private PagamentoPix atualizaPercentualPagamentoMesAtual(PagamentoPix pagamento ) {
+	private PagamentoPixDTO atualizaPercentualPagamentoMesAtual(PagamentoPix pagamento ) {
 		List<PagamentoPix> pagamentos = this.listaPagamentos();
 		BigDecimal valorTotal = this.obterValotTotal();
 		int mesVigente = Calendar.getInstance().get(Calendar.MONTH);
@@ -105,7 +109,12 @@ public class PagamentoPixService {
 			pagamento.setPorcentagem(1);
 		}
 
-		return pagamento;
+		return this.entityToDto(pagamento);
 	}
+	
+	private PagamentoPixDTO entityToDto(PagamentoPix pagamentoPix) {
+		return new PagamentoPixDTO(pagamentoPix.getNomeDestinatario(), pagamentoPix.getValor(), FormatacaoUtil.obterDataFormatada(pagamentoPix.getData()), FormatacaoUtil.obterPorcentagemFormatada(pagamentoPix.getPorcentagem()));
+	}
+	
 	
 }

@@ -7,7 +7,6 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,16 +14,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="TB_PAGAMENTO")
-@EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"data"},
-allowGetters = true)
+@JsonIgnoreProperties(value = {""}, allowGetters = true)
 public class PagamentoPix implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -47,7 +41,6 @@ public class PagamentoPix implements Serializable {
 	
 	@Column(updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
-	@CreatedDate
 	private Date data;
 	
 	private double porcentagem;
