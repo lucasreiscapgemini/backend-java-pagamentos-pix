@@ -1,6 +1,7 @@
 package com.pagamentos.apirest.models;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -40,7 +41,7 @@ public class PagamentoPix implements Serializable {
 	
 	private String chavePix;
 	
-	private double valor;
+	private BigDecimal valor;
 	
 	private String descricao;
 	
@@ -56,7 +57,7 @@ public class PagamentoPix implements Serializable {
 	}
 	
 	public PagamentoPix(String nomeDestinatario, String cpf, String instituicaoBancaria, String chavePix,
-			double valor, String descricao) {
+						BigDecimal valor, String descricao) {
 		this.nomeDestinatario = nomeDestinatario;
 		this.cpf = cpf;
 		this.instituicaoBancaria = instituicaoBancaria;
@@ -107,11 +108,11 @@ public class PagamentoPix implements Serializable {
 		this.chavePix = chavePix;
 	}
 
-	public double getValor() {
+	public BigDecimal getValor() {
 		return valor;
 	}
 
-	public void setValor(double valor) {
+	public void setValor(BigDecimal valor) {
 		this.valor = valor;
 	}
 
@@ -138,6 +139,5 @@ public class PagamentoPix implements Serializable {
 	public void setData(Date data) {
 		this.data = data;
 	}
-	
 	
 }
