@@ -26,7 +26,7 @@ public class PagamentoPixController {
 	PagamentoPixService pagamentoPixService;
 
 	@GetMapping("/pagamentos")
-	public ResponseEntity<List<PagamentoPix>> listaPagamentos() {
+	public ResponseEntity<List<PagamentoPixDTO>> listaPagamentos() {
 		return ResponseEntity.ok(pagamentoPixService.listaPagamentos());
 	}
 

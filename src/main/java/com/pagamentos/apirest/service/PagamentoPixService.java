@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.pagamentos.apirest.exception.PagamentoPixException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,10 @@ public class PagamentoPixService {
 	@Autowired
 	private PagamentoPixRepository pagamentoPixRepository;
 	
-	public List<PagamentoPix> listaPagamentos() {
-		return pagamentoPixRepository.findAll();
+	public List<PagamentoPixDTO> listaPagamentos() {
+		return pagamentoPixRepository.findAll().stream().map(
+				e -> entityToDto(e))
+				.collect(Collectors.toList());
 	}
 	
 	public PagamentoPixDTO exibePagamento(long id) {
@@ -66,7 +69,7 @@ public class PagamentoPixService {
 	
 	public double calculaPorcentagem(BigDecimal valor) {
 
-		List<PagamentoPix> pagamentos = this.listaPagamentos();
+		List<PagamentoPix> pagamentos = pagamentoPixRepository.findAll();
 		
 		int mesVigente = Calendar.getInstance().get(Calendar.MONTH);
 		
@@ -82,7 +85,7 @@ public class PagamentoPixService {
 
 	private BigDecimal obterValotTotal(){
 		BigDecimal retorno = new BigDecimal(0.0);
-		for(PagamentoPix p : this.listaPagamentos()){
+		for(PagamentoPix p : pagamentoPixRepository.findAll()){
 			if(Objects.nonNull(p.getValor()) && (p.getData().getMonth() == Calendar.getInstance().get(Calendar.MONTH)))
 				retorno = retorno.add(p.getValor());
 
@@ -91,7 +94,7 @@ public class PagamentoPixService {
 	}
 
 	private PagamentoPixDTO atualizaPercentualPagamentoMesAtual(PagamentoPix pagamento ) {
-		List<PagamentoPix> pagamentos = this.listaPagamentos();
+		List<PagamentoPix> pagamentos = pagamentoPixRepository.findAll();
 		BigDecimal valorTotal = this.obterValotTotal();
 		int mesVigente = Calendar.getInstance().get(Calendar.MONTH);
 
