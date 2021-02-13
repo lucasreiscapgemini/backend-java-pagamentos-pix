@@ -1,6 +1,7 @@
 package com.pagamentos.apirest.service;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class PagamentoPixService {
 	}
 	
 	public PagamentoPix listaPagamento(long id) {
-		return pagamentoPixRepository.findById(id);
+		return pagamentoPixRepository.findById(id).get();
 	}
 	
 	public void deletaPagamento(PagamentoPix pagamento) {
@@ -28,26 +29,33 @@ public class PagamentoPixService {
 	}
 	
 	public PagamentoPix salvaPagamento(PagamentoPix produto) {
+		produto.setData(new Date());
+		produto.setPorcentagem(calculaPorcentagem(produto.getValor()));
 		return pagamentoPixRepository.save(produto);
 	}
 	
 	public PagamentoPix atualizaPagamento(PagamentoPix produto) {
+		produto.setPorcentagem(calculaPorcentagem(produto.getValor()));
 		return pagamentoPixRepository.save(produto);
 	}
 	
-//	public double calculaPorcentagem(Calendar data, double valor) {
-//		List<PagamentoPix> pagamentos = this.listaPagamentos();
-//		
-//		int mêsVigente = data.get(Calendar.MONTH);
-//		
-//		double valorTotal = 0;
-//		for (PagamentoPix pagamentoPix : pagamentos) {
-//			if (pagamentoPix.getData().get(Calendar.MONTH) == mêsVigente) {
-//				valorTotal += pagamentoPix.getValor();
-//			}
-//		}
-//		double porcentagem = valor/valorTotal;
-//		return porcentagem; 
-//	}
+	public void deletaPagamento(Long id) {
+		this.pagamentoPixRepository.deleteById(id);
+	}
+	
+	public double calculaPorcentagem(double valor) {
+		List<PagamentoPix> pagamentos = this.listaPagamentos();
+		
+		int mesVigente = Calendar.getInstance().get(Calendar.MONTH);
+		
+		double valorTotal = 0;
+		for (PagamentoPix pagamentoPix : pagamentos) {
+			if (pagamentoPix.getData().getMonth() == mesVigente) {
+				valorTotal += pagamentoPix.getValor();
+			}
+		}
+		double porcentagem = valor/valorTotal;
+		return porcentagem; 
+	}
 	
 }

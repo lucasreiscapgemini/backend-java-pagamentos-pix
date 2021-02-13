@@ -3,18 +3,27 @@ package com.pagamentos.apirest.models;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import com.pagamentos.apirest.service.PagamentoPixService;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name="TB_PAGAMENTO")
+@EntityListeners(AuditingEntityListener.class)
+@JsonIgnoreProperties(value = {"data"},
+allowGetters = true)
 public class PagamentoPix implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -35,9 +44,16 @@ public class PagamentoPix implements Serializable {
 	
 	private String descricao;
 	
+	@Column(updatable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	@CreatedDate
 	private Date data;
 	
 	private double porcentagem;
+	
+	public PagamentoPix() {
+		
+	}
 	
 	public PagamentoPix(String nomeDestinatario, String cpf, String instituicaoBancaria, String chavePix,
 			double valor, String descricao) {
@@ -47,7 +63,7 @@ public class PagamentoPix implements Serializable {
 		this.chavePix = chavePix;
 		this.valor = valor;
 		this.descricao = descricao;
-		this.porcentagem = calculaPorcentagem(data, valor);
+		this.porcentagem = 0;
 		this.data = Calendar.getInstance().getTime();
 	}
 
@@ -123,21 +139,5 @@ public class PagamentoPix implements Serializable {
 		this.data = data;
 	}
 	
-	public double calculaPorcentagem(Date data, double valor) {
-		PagamentoPixService pagamentoPixService = new PagamentoPixService();
-
-		List<PagamentoPix> pagamentos = pagamentoPixService.listaPagamentos();
-		
-		int mêsVigente = data.getMonth();
-		
-		double valorTotal = 0;
-		for (PagamentoPix pagamentoPix : pagamentos) {
-			if (pagamentoPix.getData().getMonth() == mêsVigente) {
-				valorTotal += pagamentoPix.getValor();
-			}
-		}
-		double porcentagem = valor/valorTotal;
-		return porcentagem; 
-	}
 	
 }
