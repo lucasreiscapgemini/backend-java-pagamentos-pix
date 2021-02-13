@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.pagamentos.apirest.exception.PagamentoPixException;
 import com.pagamentos.apirest.models.PagamentoPix;
 import com.pagamentos.apirest.service.PagamentoPixService;
 
@@ -30,12 +31,22 @@ public class PagamentoPixController {
 	
 	@GetMapping("/pagamentos/{id}")
 	public ResponseEntity<PagamentoPix> listaPagamento(@PathVariable(value="id") long id) {
-		return ResponseEntity.ok(pagamentoPixService.listaPagamento(id));
+		try {
+			return ResponseEntity.ok(pagamentoPixService.listaPagamento(id));
+		} catch (PagamentoPixException e) {
+			e.printStackTrace();
+			return ResponseEntity.notFound().build();
+		}
+		
 	}
 	
 	@PostMapping("/pagamentos")
 	public ResponseEntity<PagamentoPix> salvaPagamento(@RequestBody PagamentoPix pagamento) {
-		return ResponseEntity.ok(pagamentoPixService.salvaPagamento(pagamento));
+		try {
+			return ResponseEntity.ok(pagamentoPixService.salvaPagamento(pagamento));
+		} catch (PagamentoPixException e) {
+			e.printStackTrace();
+			return ResponseEntity.notFound().build();		}
 	}
 	
 	@DeleteMapping("/pagamentos")
@@ -53,14 +64,19 @@ public class PagamentoPixController {
 		try {
 			pagamentoPixService.deletaPagamento(id);
 			return ResponseEntity.ok().build();
-		} catch (Exception e) {
+		} catch (PagamentoPixException e) {
 			return ResponseEntity.badRequest().build();
 		}
 	}
 	
 	@PutMapping("/pagamentos")
 	public ResponseEntity<PagamentoPix> atualizaPagamento(@RequestBody PagamentoPix pagamento) {
-		return ResponseEntity.ok(pagamentoPixService.atualizaPagamento(pagamento));
+		try {
+			return ResponseEntity.ok(pagamentoPixService.atualizaPagamento(pagamento));
+		} catch (PagamentoPixException e) {
+			e.printStackTrace();
+			return ResponseEntity.notFound().build();
+		}
 	}
 	
 }

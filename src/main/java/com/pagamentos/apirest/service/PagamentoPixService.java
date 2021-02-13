@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import com.pagamentos.apirest.exception.PagamentoPixException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,24 +25,38 @@ public class PagamentoPixService {
 	}
 	
 	public PagamentoPix listaPagamento(long id) {
+		if(Objects.isNull(id)){
+			throw new PagamentoPixException("Pagamento Pix não é válido");
+		}
 		return pagamentoPixRepository.findById(id).get();
 	}
 	
 	public void deletaPagamento(PagamentoPix pagamento) {
+		if(Objects.isNull(pagamento.getId())){
+			throw new PagamentoPixException("Pagamento Pix não é válido");
+		}
 		pagamentoPixRepository.delete(pagamento);
 	}
 	
-	public PagamentoPix salvaPagamento(PagamentoPix produto) {
-		produto.setData(new Date());
-		return this.atualizaPercentualPagamentoMesAtual(pagamentoPixRepository.save(produto));
+	public PagamentoPix salvaPagamento(PagamentoPix pagamento) {
+		if(Objects.isNull(pagamento.getId())){
+			throw new PagamentoPixException("Pagamento Pix não pode ser salvo");
+		}
+		pagamento.setData(new Date());
+		return this.atualizaPercentualPagamentoMesAtual(pagamentoPixRepository.save(pagamento));
 	}
 	
 	public PagamentoPix atualizaPagamento(PagamentoPix pagamento) {
+		if(Objects.isNull(pagamento.getId())){
+			throw new PagamentoPixException("Pagamento Pix não pode ser atualizado");
+		}
 		return this.atualizaPercentualPagamentoMesAtual(pagamentoPixRepository.save(pagamento));
-
 	}
 	
 	public void deletaPagamento(Long id) {
+		if(Objects.isNull(id)){
+			throw new PagamentoPixException("Pagamento Pix não é válido");
+		}
 		this.pagamentoPixRepository.deleteById(id);
 	}
 	
