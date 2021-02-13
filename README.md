@@ -1,3 +1,23 @@
+# Execução do projeto
+
+Primeiro, é necessário clonar o proojeto. Para isto, basta executar o seguinte comando:
+
+git clone https://github.com/joseiscj/backend-java-pagamentos-pix.git
+
+Para instalar as dependências, execute o seguinte comando:
+
+`mvn install`
+
+Depois que as dependências estiverem completamente instaladas, você precisará executar o seguinte comando no diretório da raiz do projeto:
+
+`mvn spring-boot:run` 
+
+## Documentação da API
+
+A API está documentada utilizando swagger ( https://swagger.io/ ). Para acessar a documentação do CRUD, após a execução do projeto, digite no navegador:
+
+`http://localhost:8080/swagger-ui.html`
+
 # Capgemini - Desafio Backend | Java
 
 Olá! Esse desafio técnico tem como propósito medir suas habilidades, ver como estuda, pensa e se organiza na prática, o  framework é de sua escolha mas a linguagem é java
