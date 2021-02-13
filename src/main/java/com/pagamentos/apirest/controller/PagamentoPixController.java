@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +18,6 @@ import com.pagamentos.apirest.service.PagamentoPixService;
 
 @RestController
 @RequestMapping(value="/api")
-@CrossOrigin(origins="*")
 public class PagamentoPixController {
 	
 	@Autowired
@@ -31,29 +29,38 @@ public class PagamentoPixController {
 	}
 	
 	@GetMapping("/pagamentos/{id}")
-	public PagamentoPix listaPagamento(@PathVariable(value="id") long id) {
-		return pagamentoPixService.listaPagamento(id);
+	public ResponseEntity<PagamentoPix> listaPagamento(@PathVariable(value="id") long id) {
+		return ResponseEntity.ok(pagamentoPixService.listaPagamento(id));
 	}
 	
-	@PostMapping("/pagamento")
+	@PostMapping("/pagamentos")
 	public ResponseEntity<PagamentoPix> salvaPagamento(@RequestBody PagamentoPix pagamento) {
 		return ResponseEntity.ok(pagamentoPixService.salvaPagamento(pagamento));
 	}
 	
-	@DeleteMapping("/pagamento")
-	public void deletaPagamento(@RequestBody PagamentoPix pagamento) {
-		pagamentoPixService.deletaPagamento(pagamento);
+	@DeleteMapping("/pagamentos")
+	public ResponseEntity deletaPagamento(@RequestBody PagamentoPix pagamento) {
+		try {
+			pagamentoPixService.deletaPagamento(pagamento);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 	
-	@DeleteMapping("/pagamento/{id}")
-	public void deletaPagamentoById(@PathVariable(value="id") Long id) {
-		pagamentoPixService.deletaPagamento(id);
+	@DeleteMapping("/pagamentos/{id}")
+	public ResponseEntity deletaPagamentoById(@PathVariable(value="id") Long id) {
+		try {
+			pagamentoPixService.deletaPagamento(id);
+			return ResponseEntity.ok().build();
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 	}
 	
-	@PutMapping("/pagamento")
-	public PagamentoPix atualizaPagamento(@RequestBody PagamentoPix pagamento) {
-		return pagamentoPixService.atualizaPagamento(pagamento);
+	@PutMapping("/pagamentos")
+	public ResponseEntity<PagamentoPix> atualizaPagamento(@RequestBody PagamentoPix pagamento) {
+		return ResponseEntity.ok(pagamentoPixService.atualizaPagamento(pagamento));
 	}
-	
 	
 }
