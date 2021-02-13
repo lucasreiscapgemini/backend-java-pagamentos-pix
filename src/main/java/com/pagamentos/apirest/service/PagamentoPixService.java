@@ -116,7 +116,7 @@ public class PagamentoPixService {
 	}
 	
 	private PagamentoPixDTO entityToDto(PagamentoPix pagamentoPix) {
-		return new PagamentoPixDTO(pagamentoPix.getNomeDestinatario(), pagamentoPix.getValor(), FormatacaoUtil.obterDataFormatada(pagamentoPix.getData()), FormatacaoUtil.obterPorcentagemFormatada(pagamentoPix.getPorcentagem()));
+		return new PagamentoPixDTO(pagamentoPix.getId(), pagamentoPix.getNomeDestinatario(), pagamentoPix.getCpf(), pagamentoPix.getInstituicaoBancaria(), pagamentoPix.getChavePix(), pagamentoPix.getValor(), pagamentoPix.getDescricao(), FormatacaoUtil.obterDataFormatada(pagamentoPix.getData()), FormatacaoUtil.obterPorcentagemFormatada(pagamentoPix.getPorcentagem()));
 	}
 	
 	
