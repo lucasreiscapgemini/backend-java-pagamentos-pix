@@ -19,12 +19,14 @@ public class PagamentoPixController {
 
 	@GetMapping("/pagamentos")
 	public List<PagamentoPix> listarPagamentosPorMes() {
-		return null;
+		return service.listarPagamentosPorMes();
 	}
 	
 	@PostMapping
 	public void salvar(@RequestBody PagamentoPix pagamento) {
+		service.atribuirDataHoraAtual(pagamento);
 		service.salvar(pagamento);
+		service.atualizarPercentuaisPorMes();
 	}
 	
 }
