@@ -35,6 +35,11 @@ public class PagamentoPixService {
 
 	}
 	
+	// Ler pagamento cujo id corresponde ao id passado
+	public PagamentoPix ler(Long id) {
+		return repository.findById(id).get();
+	}
+	
 	// Remove pagamento pelo id e atualiza os percentuais
 	// para cada pagamento registrado no mês atual
 	public void remover(Long id) {
@@ -101,7 +106,7 @@ public class PagamentoPixService {
 		return percentualPorMes;
 	}
 	
-	// Define formato do percentual do pagamento
+	// Define formato do percentual do pagamento para duas cadas decimais (.00)
 	public double definirDecimaisParaPercentualPorMes(double percentualPorMes) {
 		percentualPorMes = percentualPorMes*100;
 		BigDecimal bigDecimal = BigDecimal.valueOf(percentualPorMes);

@@ -26,6 +26,12 @@ public class PagamentoPixController {
 		return service.listarPagamentosPorMes();
 	}
 	
+	// Ler pagamento cujo id corresponde ao passado na URL
+	@GetMapping("{id}")
+	public PagamentoPix ler(@PathVariable Long id) {
+		return service.ler(id);
+	}
+	
 	// Persiste pagamento e atualiza percentuais de cada pagamento com o mês correspondente
 	@PostMapping
 	public void salvar(@RequestBody PagamentoPix pagamento) {
