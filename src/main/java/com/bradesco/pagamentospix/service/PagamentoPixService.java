@@ -23,13 +23,20 @@ public class PagamentoPixService {
 	// Retorna pagamentos do mês atual
 	public List<PagamentoPix> listarPagamentosPorMes() {
 		int mes = receberMesAtual();
-		
 		return repository.findAllByMes(mes);
 	}
 	
-	// Persiste pagamento
+	// Atribui data e hora atuais ao pagamento, persiste-o e atualiza os percentuais para cada pagamento registrado
 	public void salvar(PagamentoPix pagamento) {
+		atribuirDataHoraAtualAoPagamento(pagamento);
 		repository.save(pagamento);
+
+	}
+	
+	// Remove pagamento pelo id e atualiza os percentuais para cada pagamento registrado
+	public void remover(Long id) {
+		repository.deleteById(id);
+		atualizarPercentuaisPorMes();
 	}
 	
 	// Atribui data e horas atuais ao pagamento efetuado
@@ -57,6 +64,7 @@ public class PagamentoPixService {
 	// Atualiza os percentuais de cada pagamento
 	public void atualizarPercentuaisPorMes() {
 		List<PagamentoPix> pagamentos = repository.findAll();
+		double percentual = 0;
 		pagamentos.forEach((pagamento) -> {
 			pagamento.setPercentualPorMes(definirDecimaisParaPercentualPorMes(calcularPercentualPorMes(pagamento)));
 			salvar(pagamento);
@@ -76,8 +84,9 @@ public class PagamentoPixService {
 	
 	// Define formato do percentual do pagamento
 	public double definirDecimaisParaPercentualPorMes(double percentualPorMes) {
-		percentualPorMes = BigDecimal.valueOf(percentualPorMes).setScale(3, RoundingMode.HALF_UP).doubleValue();
 		percentualPorMes = percentualPorMes*100;
-		return percentualPorMes;
+		BigDecimal bigDecimal = BigDecimal.valueOf(percentualPorMes);
+		bigDecimal = bigDecimal.setScale(2, RoundingMode.HALF_UP);
+		return bigDecimal.doubleValue();
 	}
 }
