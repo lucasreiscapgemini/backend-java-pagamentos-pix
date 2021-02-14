@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,17 +27,34 @@ public class PagamentoPixService {
 		return repository.findAllByMes(mes);
 	}
 	
-	// Atribui data e hora atuais ao pagamento, persiste-o e atualiza os percentuais para cada pagamento registrado
+	// Atribui data e hora atuais ao pagamento, persiste-o e 
+	// atualiza os percentuais para cada pagamento registrado
 	public void salvar(PagamentoPix pagamento) {
-		atribuirDataHoraAtualAoPagamento(pagamento);
+		this.atribuirDataHoraAtualAoPagamento(pagamento);
 		repository.save(pagamento);
 
 	}
 	
-	// Remove pagamento pelo id e atualiza os percentuais para cada pagamento registrado
+	// Remove pagamento pelo id e atualiza os percentuais
+	// para cada pagamento registrado no mês atual
 	public void remover(Long id) {
 		repository.deleteById(id);
-		atualizarPercentuaisPorMes();
+		this.atualizarPercentuaisPorMes();
+	}
+	
+	// Atauliza pagamento e atualiza os percentuais
+	// para cada pagamento registrado no mês atual
+	public void atualizar(PagamentoPix pagamento) {
+		PagamentoPix pagamentoRegistrado = repository.findById(pagamento.getId()).get();
+		pagamentoRegistrado.setNomeDestinatario(pagamento.getNomeDestinatario());
+		pagamentoRegistrado.setChavePix(pagamento.getChavePix());
+		pagamentoRegistrado.setCpf(pagamento.getCpf());
+		pagamentoRegistrado.setDataHora(new Date());
+		pagamentoRegistrado.setDescricao(pagamento.getDescricao());
+		pagamentoRegistrado.setInstituicaoBancaria(pagamento.getInstituicaoBancaria());
+		pagamentoRegistrado.setValor(pagamento.getValor());
+		repository.save(pagamentoRegistrado);
+		this.atualizarPercentuaisPorMes();
 	}
 	
 	// Atribui data e horas atuais ao pagamento efetuado
@@ -49,7 +67,8 @@ public class PagamentoPixService {
 	public int receberMesAtual() {
 		Calendar calendario = Calendar.getInstance();
 		int mes = calendario.get(Calendar.MONTH);
-		// Icrementa em uma unidade o índice do mês retornado para que acesse corretamente o valor do mês no banco
+		// Incrementa em uma unidade o índice do mês retornado para
+		// que acesse corretamente o valor do mês no banco
 		++mes;
 		return mes;
 	}
@@ -64,17 +83,17 @@ public class PagamentoPixService {
 	// Atualiza os percentuais de cada pagamento
 	public void atualizarPercentuaisPorMes() {
 		List<PagamentoPix> pagamentos = repository.findAll();
-		double percentual = 0;
 		pagamentos.forEach((pagamento) -> {
 			pagamento.setPercentualPorMes(definirDecimaisParaPercentualPorMes(calcularPercentualPorMes(pagamento)));
 			salvar(pagamento);
 		});
 	}
 	
-	// Calcular o percentual de cada pagamento com base no montante total do mês atual
+	// Calcular o percentual de cada pagamento 
+	// com base no montante total do mês atual
 	public double calcularPercentualPorMes(PagamentoPix pagamento) {
 		somatorioValores = 0;
-		List<BigDecimal> valores = receberValoresDoMes();
+		List<BigDecimal> valores = this.receberValoresDoMes();
 		valores.forEach((valor) -> {
 			somatorioValores = somatorioValores + valor.doubleValue();
 		});
