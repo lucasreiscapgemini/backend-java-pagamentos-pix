@@ -15,7 +15,7 @@ Construir um micro-service que por sua vez terá um endPoint "/pagamentos" que  
 Você deve criar um micro-service que conterá um path e um endPoint retornando dados em formato JSON contendo algumas informações dos dados de pagamento PIX.
 
 ## Output
-O cliente terá que devolver uma lista de dados pagamento PIX contendo alguns atributos sendo eles  devolvidos no lado servidor.
+Receber lista de pagamentos pix com porcentagem de cada pagamento em relação ao valor montante dos pagamentos pix de uma pessoa X e data dd/mm/yyyy
 
 ### Dados a serem coletados do pagamento pix :
 
