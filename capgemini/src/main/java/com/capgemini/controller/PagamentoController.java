@@ -25,8 +25,7 @@ public class PagamentoController {
 	@PostMapping
 	@Transactional
 	public ResponseEntity<Object> post(@RequestBody @Valid PagamentoEntity entity) {
-		ResponseService responseService = new ResponseService();
-        this.service.post(entity);
+		ResponseService responseService = this.service.post(entity);
 		return ResponseEntity.status(responseService.getStatus()).body(responseService.getResponse());
 	}
 

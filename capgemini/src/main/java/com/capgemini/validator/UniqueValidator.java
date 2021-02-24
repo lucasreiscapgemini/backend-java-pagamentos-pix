@@ -1,4 +1,4 @@
-package com.capgemini.utils;
+package com.capgemini.validator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

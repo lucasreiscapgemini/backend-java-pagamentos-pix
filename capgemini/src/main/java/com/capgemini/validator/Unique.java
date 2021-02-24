@@ -1,4 +1,4 @@
-package com.capgemini.utils;
+package com.capgemini.validator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

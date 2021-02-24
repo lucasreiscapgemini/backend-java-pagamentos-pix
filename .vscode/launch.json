@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-CapgeminiApplication<capgemini>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.capgemini.CapgeminiApplication",
+            "projectName": "capgemini",
+            "args": ""
+        }
+    ]
+}
