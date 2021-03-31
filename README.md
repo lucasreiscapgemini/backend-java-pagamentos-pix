@@ -26,7 +26,7 @@ Receber lista de pagamentos pix com porcentagem de cada pagamento em relação a
 * Valor
 * Data Pagamento
 * Descrição
-* Logica de porcentagem dos pagametnos (Ex: aplicar uma regra de porcentagem com base no valor do pagamento pix )
+* Logica de porcentagem dos pagamentos (Ex: aplicar uma regra de porcentagem com base no valor do pagamento pix )
 
 ## Alguns pontos cruciais para entrega
 
