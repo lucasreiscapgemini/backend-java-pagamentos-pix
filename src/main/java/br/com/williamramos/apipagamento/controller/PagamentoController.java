@@ -53,22 +53,24 @@ public class PagamentoController {
         }
     }
 
-        // criar um novo pagamento pix
-        @PostMapping
-        public Pagamento save (@RequestBody Pagamento pagamento){
+    // criar um novo pagamento pix
+    @PostMapping
+    public Pagamento save(@RequestBody Pagamento pagamento) {
+        if (pagamento.getDataPagamento() == null) {
             pagamento.setDataPagamento(LocalDate.now());
-            return repository.save(pagamento);
         }
+        return repository.save(pagamento);
+    }
 
 
-        // Exclui um pagamento pelo id caso o pagamento exista, caso não exista retorna um 404
-        @DeleteMapping(path = "/{id}")
-        public ResponseEntity<?> delete ( @PathVariable("id") long id){
-            return repository.findById(id).map(item -> {
-                repository.deleteById(id);
-                return ResponseEntity.ok().build();
-            }).orElse(ResponseEntity.notFound().build());
-
-        }
+    // Exclui um pagamento pelo id caso o pagamento exista, caso não exista retorna um 404
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") long id) {
+        return repository.findById(id).map(item -> {
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }).orElse(ResponseEntity.notFound().build());
 
     }
+
+}

@@ -22,7 +22,7 @@ public class Extrato {
     }
 
     public BigDecimal getTotalPagamento() {
-       return this.totalPagamento;
+        return this.totalPagamento;
     }
 
     public void setTotalPagamento(BigDecimal totalPagamento) {
