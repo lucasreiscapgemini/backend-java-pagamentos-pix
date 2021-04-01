@@ -4,6 +4,7 @@ import br.com.williamramos.apipagamento.domain.model.Extrato;
 import br.com.williamramos.apipagamento.domain.model.Pagamento;
 import br.com.williamramos.apipagamento.domain.repository.PagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,20 @@ public class PagamentoController {
     @GetMapping("/extrato/{cpf}")
     public Extrato getExtrato(@PathVariable("cpf") String cpf) {
         List<Pagamento> pagamentos = repository.findByCpf(cpf);
+        if (pagamentos != null) {
+            this.extrato.setListaPagamentos(pagamentos);
+            return this.extrato;
+        } else {
+            return null;
+        }
+    }
+
+    @GetMapping("/relatorio/{cpf}")
+    public Extrato extrato(@RequestParam(name = "dataInicio", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+                           @RequestParam(name = "dataFim", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+                           @PathVariable("cpf") String cpf) {
+
+        List<Pagamento> pagamentos = repository.findByDataPagamentoBetweenAndCpf(dataInicio, dataFim, cpf);
         if (pagamentos != null) {
             this.extrato.setListaPagamentos(pagamentos);
             return this.extrato;

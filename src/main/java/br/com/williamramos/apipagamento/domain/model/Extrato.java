@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Extrato {
     private List<Pagamento> listaPagamentos;
-    private BigDecimal totalPagamento;
+    private double totalPagamento;
 
     public Extrato() {
         this.listaPagamentos = new ArrayList<>();
@@ -19,14 +19,25 @@ public class Extrato {
 
     public void setListaPagamentos(List<Pagamento> listaPagamentos) {
         this.listaPagamentos = listaPagamentos;
+        this.calcularPorcentagemPagamento();
     }
 
-    public BigDecimal getTotalPagamento() {
+    public Double getTotalPagamento() {
         return this.totalPagamento;
     }
 
-    public void setTotalPagamento(BigDecimal totalPagamento) {
+    public void setTotalPagamento(Double totalPagamento) {
         this.totalPagamento = totalPagamento;
+    }
+
+    private void calcularPorcentagemPagamento() {
+        this.listaPagamentos.forEach(item -> {
+            this.totalPagamento += item.getValor();
+        });
+        this.listaPagamentos.forEach(item -> {
+            double porc = (item.getValor() / totalPagamento) * 100;
+            item.setPorcentagem(porc);
+        });
     }
 
 

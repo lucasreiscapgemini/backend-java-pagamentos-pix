@@ -5,10 +5,11 @@ import br.com.williamramos.apipagamento.domain.enus.Bancos;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "tb_pagamento")
 @Table(name = "tb_pagamento")
 public class Pagamento extends BaseEntity {
     @Column(name = "destinatario")
@@ -24,13 +25,18 @@ public class Pagamento extends BaseEntity {
     private Bancos instituicaoBancaria;
 
     @Column(name = "valor")
-    private BigDecimal valor;
+    private Double valor;
 
     @Column(name = "data_pagamento")
     private LocalDate dataPagamento;
 
     @Column(name = "descricao")
     private String Descricao;
+
+    @Transient
+    private Double porcentagem;
+
+
 
     public String getDestinatario() {
         return destinatario;
@@ -64,11 +70,11 @@ public class Pagamento extends BaseEntity {
         this.instituicaoBancaria = instituicaoBancaria;
     }
 
-    public BigDecimal getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 
@@ -88,4 +94,11 @@ public class Pagamento extends BaseEntity {
         Descricao = descricao;
     }
 
+    public Double getPorcentagem() {
+        return porcentagem;
+    }
+
+    public void setPorcentagem(Double porcentagem) {
+        this.porcentagem = porcentagem;
+    }
 }
