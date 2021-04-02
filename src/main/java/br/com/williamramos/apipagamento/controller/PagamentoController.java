@@ -77,6 +77,23 @@ public class PagamentoController {
         return repository.save(pagamento);
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Pagamento> update(@PathVariable("id") long id,
+                                            @RequestBody Pagamento pagamento) {
+        return repository.findById(id)
+                .map(item -> {
+                    item.setDestinatario(pagamento.getDestinatario());
+                    item.setDataPagamento(pagamento.getDataPagamento());
+                    item.setCpf(pagamento.getCpf());
+                    item.setChavePix(pagamento.getChavePix());
+                    item.setValor(pagamento.getValor());
+                    item.setInstituicaoBancaria(pagamento.getInstituicaoBancaria());
+                    item.setDescricao(pagamento.getDescricao());
+                    Pagamento obj = repository.save(item);
+                    return ResponseEntity.ok().body(obj);
+                }).orElse(ResponseEntity.notFound().build());
+    }
+
 
     // Exclui um pagamento pelo id caso o pagamento exista, caso não exista retorna um 404
     @DeleteMapping(path = "/{id}")
